@@ -1,3 +1,3 @@
-root -l ./Finde/finde.C'("./Finde/delphes_25.root")'
-rm -f png/*
+root -l ./Finde/finde.C'("./Finde/delphes_ppZee.root")'
+mkdir -p ./Finde/png
 mv *.png ./Finde/png
