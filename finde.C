@@ -47,6 +47,7 @@ void finde(const char *inputFile)
 
     fe = (Electron*) branchElectron->At(0);
     // Selecting the electron with the highest PT
+    // Though it seems that the highe will be the 1st element in branchElectron
     for(Int_t i = 0; i < enu; ++i)
     {
       electron = (Electron*) branchElectron->At(i);
