@@ -25,7 +25,7 @@ void finde(const char *inputFile)
   TClonesArray *branchHCal = treeReader->UseBranch("HCalTowers");
   TClonesArray *branchElectron = treeReader->UseBranch("Electron");
 
-  Electron *electron, *highe;
+  Electron *electron, *highe, *fe;
   float curr_ePT = -999999.0;
   Tower *ECal;
   Tower *HCal;
@@ -41,19 +41,21 @@ void finde(const char *inputFile)
   for(Int_t entry = 0; entry < numberOfEntries; ++entry)
   {
     treeReader->ReadEntry(entry);
-    //std::cout << "Event#: " << entry << std::endl;
+    std::cout << "Event#: " << entry << std::endl;
     int enu = branchElectron->GetEntriesFast();
-    //std::cout << "  e#: " << enu << std::endl;
+    std::cout << "  e#: " << enu << std::endl;
 
+    fe = (Electron*) branchElectron->At(0);
     // Selecting the electron with the highest PT
     for(Int_t i = 0; i < enu; ++i)
     {
       electron = (Electron*) branchElectron->At(i);
-      if (electron->PT >= curr_ePT)
+      if (electron->PT >= fe->PT)
       {
         curr_ePT = electron->PT;
         highe = electron;
       }
+      std::cout << "  #" << i << "e, PT=" << electron->PT << ", currPT:" << curr_ePT << std::endl;
     }
 
     // For events with at least one electron
