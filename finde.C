@@ -41,9 +41,9 @@ void finde(const char *inputFile)
   for(Int_t entry = 0; entry < numberOfEntries; ++entry)
   {
     treeReader->ReadEntry(entry);
-    std::cout << "Event#: " << entry << std::endl;
+    std::cout << "Event#" << entry << ": " << std::endl;
     int enu = branchElectron->GetEntriesFast();
-    std::cout << "  e#: " << enu << std::endl;
+    std::cout << "  " << enu << " e in total" << std::endl;
 
     fe = (Electron*) branchElectron->At(0);
     // Selecting the electron with the highest PT
@@ -56,7 +56,7 @@ void finde(const char *inputFile)
         curr_ePT = electron->PT;
         highe = electron;
       }
-      std::cout << "  #" << i << "e, PT=" << electron->PT << ", currPT:" << curr_ePT << std::endl;
+      std::cout << "  e#" << i << ", PT=" << electron->PT << ", currPT:" << curr_ePT << std::endl;
     }
 
     // For events with at least one electron
@@ -68,9 +68,17 @@ void finde(const char *inputFile)
       for(Int_t j = 0; j < branchECal->GetEntriesFast(); ++j)
       {
         ECal = (Tower*) branchECal->At(j);
-        //std::cout << "  Ecal#: " << j << std::endl;
-        //std::cout << "  Ecal.ET: " << ECal->ET << std::endl;
-        //std::cout << "  e.PT: " << highe->PT << std::endl;
+        std::cout << "    Ecal#" << j << ", Ecal.ET: " << ECal->ET << ", Ecal.E: " << ECal->E <<  std::endl;
+        for (Int_t ii = 0 ; ii < 4; ++ii)
+        {
+          std::cout << "      Edge#" << ii << ": " << ECal->Edges[ii];
+          
+        }
+        std::cout << std::endl;
+        //if (ECal->E == highe->PT)
+        //{
+        //  std::cout << "!!!!!!" << j << std::endl; 
+        //}
         //std::cout << "  ECal.Phi-e.Phi: " << ECal->Phi - highe->Phi << std::endl;
         //std::cout << "  ECal.Eta-e.Eta: " << ECal->Eta - highe->Eta << std::endl;
         if (std::sqrt(std::pow(ECal->Eta-highe->Eta,2) + std::pow(ECal->Phi-highe->Phi,2)) < 0.4)
