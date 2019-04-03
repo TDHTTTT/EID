@@ -56,7 +56,7 @@ void finde(const char *inputFile)
         curr_ePT = electron->PT;
         highe = electron;
       }
-      std::cout << "  e#" << i << ", PT=" << electron->PT << ", currPT:" << curr_ePT << std::endl;
+      std::cout << "  e#" << i << ", PT=" << electron->PT << ", currPT:" << curr_ePT << ", Eta: " << electron->Eta << ", Phi: " << electron->Phi << std::endl;
     }
 
     // For events with at least one electron
@@ -68,35 +68,42 @@ void finde(const char *inputFile)
       for(Int_t j = 0; j < branchECal->GetEntriesFast(); ++j)
       {
         ECal = (Tower*) branchECal->At(j);
-        std::cout << "    Ecal#" << j << ", Ecal.ET: " << ECal->ET << ", Ecal.E: " << ECal->E <<  std::endl;
+        std::cout << "    Ecal#" << j << ", Ecal.ET: " << ECal->ET << ", Ecal.E: " << ECal->E  <<  std::endl;
         for (Int_t ii = 0 ; ii < 4; ++ii)
         {
           std::cout << "      Edge#" << ii << ": " << ECal->Edges[ii];
           
         }
         std::cout << std::endl;
+        std::cout <<  "      Random: " << "Ecal.Eta: " << ECal->Eta << ", Ecal.Phi: " << ECal->Phi << std::endl;
+
+        float eceta = 0.5*(ECal->Edges[0]+ECal->Edges[1]);
+        float ecphi = 0.5*(ECal->Edges[2]+ECal->Edges[3]); 
+        std::cout <<  "      Center: " << "Ecal.Eta: " << eceta  << ", Ecal.Phi: " << ecphi << std::endl;
         //if (ECal->E == highe->PT)
         //{
         //  std::cout << "!!!!!!" << j << std::endl; 
         //}
         //std::cout << "  ECal.Phi-e.Phi: " << ECal->Phi - highe->Phi << std::endl;
         //std::cout << "  ECal.Eta-e.Eta: " << ECal->Eta - highe->Eta << std::endl;
-        if (std::sqrt(std::pow(ECal->Eta-highe->Eta,2) + std::pow(ECal->Phi-highe->Phi,2)) < 0.4)
+        if (std::sqrt(std::pow(eceta-highe->Eta,2) + std::pow(ecphi-highe->Phi,2)) < 0.4)
         {
-          ephi.push_back(ECal->Phi - highe->Phi);
-          eeta.push_back(ECal->Eta - highe->Eta);
-          histE->Fill(ECal->Eta - highe->Eta, ECal->Phi - highe->Phi, ECal->ET);
+          eeta.push_back(eceta - highe->Eta);
+          ephi.push_back(ecphi - highe->Phi);
+          histE->Fill(eceta - highe->Eta, ecphi - highe->Phi, ECal->ET);
         }
       }
 
       for(Int_t k = 0; k < branchHCal->GetEntriesFast(); ++k)
       {
         HCal = (Tower*) branchHCal->At(k);
-        if (std::sqrt(std::pow(HCal->Eta-highe->Eta,2) + std::pow(HCal->Phi-highe->Phi,2)) < 0.4)
+        float hceta = 0.5*(HCal->Edges[0]+HCal->Edges[1]);
+        float hcphi = 0.5*(HCal->Edges[2]+HCal->Edges[3]); 
+        if (std::sqrt(std::pow(hceta-highe->Eta,2) + std::pow(hcphi-highe->Phi,2)) < 0.4)
         {
-          hphi.push_back(HCal->Phi - highe->Phi);
-          heta.push_back(HCal->Eta - highe->Eta);
-          histH->Fill(HCal->Eta - highe->Eta, HCal->Phi - highe->Phi, HCal->ET);
+          heta.push_back(hceta - highe->Eta);
+          hphi.push_back(hcphi - highe->Phi);
+          histH->Fill(hceta - highe->Eta, hcphi - highe->Phi, HCal->ET);
         }
       }
     }
