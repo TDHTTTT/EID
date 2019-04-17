@@ -9,27 +9,37 @@ R__LOAD_LIBRARY(libDelphes)
 
 // didn't find good tcl lib
 //------------------------------------------------------------------------------
+int verbose = 3;
+class mystreambuf: public std::streambuf
+{
+};
+mystreambuf nostreambuf;
+std::ostream nocout(&nostreambuf);
+#define log(x) ((x >= verbose)? std::cout : nocout)
+
 
 void printV(std::vector<float> v)
 {
-    std::cout << "length=" << v.size() << ": ";
+    log(1) << "length=" << v.size() << ": ";
     for(int i=0; i<v.size(); ++i)
     {
-        std::cout << v[i] << ' ';
+        log(1) << v[i] << ' ';
     }
-    std::cout << endl;
+    log(1) << endl;
 }
 
 int findV(std::vector<float> v, float e)
 {
     for(int i=0; i<v.size()-1; ++i)
     {
-        // what if electron's eta/phi on edge?
+        // what if electron's eta/phi on the edges of cells?
+        // since they are not in the center as Tower
         if(e>v[i] && e<v[i+1])
         {
             return i;
         }
     }
+    // -1 means not found
     return -1;
 }
 
@@ -51,6 +61,7 @@ void finde(const char *inputFile)
   TClonesArray *branchElectron = treeReader->UseBranch("Electron");
 
   Electron *electron, *highe;
+  
   //float curr_ePT = -999999.0;
   Tower *ECal;
   Tower *HCal;
@@ -90,13 +101,13 @@ void finde(const char *inputFile)
 
   // Loop over all events
   for(Int_t entry = 0; entry < numberOfEntries; ++entry)
-  //for(Int_t entry = 0; entry < 2; ++entry)
+  // for(Int_t entry = 0; entry < 2; ++entry)
   {
     treeReader->ReadEntry(entry);
-    //std::cout << "Event#" << entry << ": " << std::endl;
+    log(2) << "Event#" << entry << ": " << std::endl;
     int enu = branchElectron->GetEntriesFast();
-    total_e += enu;
-    //std::cout << "  " << enu << " e in total" << std::endl;
+    // total_e += enu;
+    log(2) << "  " << enu << " e in total" << std::endl;
 
     highe = (Electron*) branchElectron->At(0);
     // Selecting the electron with the highest PT
@@ -109,40 +120,50 @@ void finde(const char *inputFile)
         //curr_ePT = electron->PT;
         highe = electron;
       }
-      //std::cout << "  e#" << i << ", PT=" << electron->PT << ", currPT:" << electron->PT << ", Eta: " << electron->Eta << ", Phi: " << electron->Phi << std::endl;
+      log(2) << "  e#" << i << ", PT=" << electron->PT << ", HighePT:" << highe->PT << ", Eta: " << electron->Eta << ", Phi: " << electron->Phi << std::endl;
     }
     int ii = findV(beeta,electron->Eta);
-    std::cout << "!!!" << ii << std::endl;
-    if(ii > beeta.size()-15)
+    //std::cout << "Position of e: " << ii << std::endl;
+    if(ii > beeta.size()-15 || ii < 15)
     {
         far_e += 1;
-        std::cout << "The electron falls too far!!" << std::endl;
+        //std::cout << "The electron falls too far!!" << std::endl;
     }
 
     // For events with at least one electron
     if (enu > 0)
     {
+      total_e += 1;
+      //Initialize highest ET in tower to be the first
+      Tower *highECal = (Tower*) branchECal->At(0);
       for(Int_t j = 0; j < branchECal->GetEntriesFast(); ++j)
       {
         ECal = (Tower*) branchECal->At(j);
-        //std::cout << "    Ecal#" << j << ", Ecal.ET: " << ECal->ET << ", Ecal.E: " << ECal->E  <<  std::endl;
-       // for (Int_t ii = 0 ; ii < 4; ++ii)
-       // {
-       //   std::cout << "      Edge#" << ii << ": " << ECal->Edges[ii];
-       //   
-       // }
-       // std::cout << std::endl;
-       // std::cout <<  "      Random: " << "Ecal.Eta: " << ECal->Eta << ", Ecal.Phi: " << ECal->Phi << std::endl;
+        log(1) << "    Ecal#" << j << ", Ecal.ET: " << ECal->ET << ", Ecal.E: " << ECal->E  <<  std::endl;
+        for (Int_t ii = 0 ; ii < 4; ++ii)
+        {
+          log(1) << "      Edge#" << ii << ": " << ECal->Edges[ii];
+          
+        }
+        log(1) << std::endl;
+        log(1) <<  "      Random: " << "Ecal.Eta: " << ECal->Eta << ", Ecal.Phi: " << ECal->Phi << std::endl;
 
         float eceta = 0.5*(ECal->Edges[0]+ECal->Edges[1]);
         float ecphi = 0.5*(ECal->Edges[2]+ECal->Edges[3]); 
-        //std::cout <<  "      Center: " << "Ecal.Eta: " << eceta  << ", Ecal.Phi: " << ecphi << std::endl;
+        log(1) <<  "      Center: " << "Ecal.Eta: " << eceta  << ", Ecal.Phi: " << ecphi << std::endl;
+        
+        // Make sure if ecal.eta is within 15 cells in the barrel
+        // if(findV(beeta,))
+        
+        
         //if (ECal->E == highe->PT)
         //{
         //  std::cout << "!!!!!!" << j << std::endl; 
         //}
         //std::cout << "  ECal.Phi-e.Phi: " << ECal->Phi - highe->Phi << std::endl;
         //std::cout << "  ECal.Eta-e.Eta: " << ECal->Eta - highe->Eta << std::endl;
+        
+        
         if (std::sqrt(std::pow(eceta-highe->Eta,2) + std::pow(ecphi-highe->Phi,2)) < 0.4)
         {
           eeta.push_back(eceta - highe->Eta);
@@ -166,24 +187,24 @@ void finde(const char *inputFile)
     }
   }
     
-    std::cout << "Total: " << total_e << ", Far: " << far_e << std::endl;
+    log(5) << "Electron: Total: " << total_e << ", Far: " << far_e << std::endl;
     
     //Stats for min max in histogram
     float maxephi = *std::max_element(std::begin(ephi), std::end(ephi));
     float minephi = *std::min_element(std::begin(ephi), std::end(ephi));
-    std::cout << "Max ephi: " << maxephi << ", Min ephi: " << minephi << std::endl;
+    log(5) << "Max ephi: " << maxephi << ", Min ephi: " << minephi << std::endl;
   
     float maxeeta = *std::max_element(std::begin(eeta), std::end(eeta));
     float mineeta = *std::min_element(std::begin(eeta), std::end(eeta));
-    std::cout << "Max eeta: " << maxeeta << ", Min eeta: " << mineeta << std::endl;
+    log(5) << "Max eeta: " << maxeeta << ", Min eeta: " << mineeta << std::endl;
 
     float maxhphi = *std::max_element(std::begin(hphi), std::end(hphi));
     float minhphi = *std::min_element(std::begin(hphi), std::end(hphi));
-    std::cout << "Max hphi: " << maxhphi << ", Min hphi: " << minhphi << std::endl;
+    log(5) << "Max hphi: " << maxhphi << ", Min hphi: " << minhphi << std::endl;
   
     float maxheta = *std::max_element(std::begin(heta), std::end(heta));
     float minheta = *std::min_element(std::begin(heta), std::end(heta));
-    std::cout << "Max heta: " << maxheta << ", Min heta: " << minheta << std::endl;
+    log(5) << "Max heta: " << maxheta << ", Min heta: " << minheta << std::endl;
     
 
     //Edit axis and save png
