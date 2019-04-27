@@ -10,10 +10,9 @@ void trim(const char *inputFile)
   gSystem->Load("libDelphes");
   TChain chain("Delphes");
   chain.Add(inputFile);
-
   ExRootTreeReader* treeReader = new ExRootTreeReader(&chain);
 
-  TFile *nf = new TFile("trimmm.root","recreate");
+  TFile *nf = new TFile("trim.root","recreate");
   TTree *nt = chain.CopyTree("Electron.fUniqueID == 0");
   nf->Write();
 }
