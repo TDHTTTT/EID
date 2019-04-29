@@ -1,3 +1,4 @@
+#!/usr/bin/env bash
 # source init.sh
 
 export DELPHES=/c/Users/tdhttt/workspace/hep/delphes/Delphes-3.4.1
