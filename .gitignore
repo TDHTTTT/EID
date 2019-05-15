@@ -1,4 +1,6 @@
 *.root
-/png
-/archieve
-log*
+archieve/
+data/
+log/
+output/
+*.swp
