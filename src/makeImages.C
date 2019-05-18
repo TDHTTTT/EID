@@ -9,7 +9,6 @@ R__LOAD_LIBRARY(libDelphes)
 #include <fstream>
 #endif
 
-// Author: Jessica Howard
 //------------------------------------------------------------------------------
 
 void makeImages(const char *inputFile)
@@ -81,42 +80,43 @@ void makeImages(const char *inputFile)
   Float_t binWidth_HcalEta = 0.1;
 
   // Dummy Histograms: (1) Ecal for finding high PT electron's cell, (2)  Ecal filled for that event (3) Hcal filled for that event
-  TH2 *hEle_d = new TH2F("hEle_d", "", nBins_EcalPhi, -pi, pi, nBins_EcalEta, -2.5, 2.5);
+  // x axis is eta, y is phi
+  TH2 *hEle_d  = new TH2F("hEle_d",  "", nBins_EcalEta, -2.5, 2.5, nBins_EcalPhi, -pi, pi);
   TAxis *hEle_d_xAxis = hEle_d->GetXaxis();
   TAxis *hEle_d_yAxis = hEle_d->GetYaxis();
 
-  TH2 *hECal_d = new TH2F("hECal_d", "", nBins_EcalPhi, -pi, pi, nBins_EcalEta, -2.5, 2.5);
+  TH2 *hECal_d = new TH2F("hECal_d", "", nBins_EcalEta, -2.5, 2.5, nBins_EcalPhi, -pi, pi);
   TAxis *hECal_d_xAxis = hECal_d->GetXaxis();
   TAxis *hECal_d_yAxis = hECal_d->GetYaxis();
 
-  TH2 *hHCal_d = new TH2F("hHCal_d", "", nBins_HcalPhi, -pi, pi, nBins_HcalEta, -2.5, 2.5);
+  TH2 *hHCal_d = new TH2F("hHCal_d", "", nBins_HcalEta, -2.5, 2.5, nBins_HcalPhi, -pi, pi);
   TAxis *hHCal_d_xAxis = hHCal_d->GetXaxis();
   TAxis *hHCal_d_yAxis = hHCal_d->GetYaxis();
 
   /** Histograms for aggregate and single images **/
-  // Ecal: 31x31 images cell size (eta, phi) = (y, x) = (0.025, pi/126)
-  float histLowEx  = -1.*(15.5*binWidth_EcalPhi);  
-  float histHighEx = +1.*(15.5*binWidth_EcalPhi); 
-  float histLowEy  = -1.*(15.5*binWidth_EcalEta);
-  float histHighEy = +1.*(15.5*binWidth_EcalEta);
+  // Ecal: 31x31 images cell size (eta, phi) = (x, y) = (0.025, pi/126)
+  float histLowEx  = -1.*(15.5*binWidth_EcalEta);
+  float histHighEx = +1.*(15.5*binWidth_EcalEta);
+  float histLowEy  = -1.*(15.5*binWidth_EcalPhi);  
+  float histHighEy = +1.*(15.5*binWidth_EcalPhi); 
  
   TH2 *histEcal_E_a = new TH2F("histEcal_E_a", "Aggregate Energy in ECal", 31, histLowEx, histHighEx, 31, histLowEy, histHighEy);
   TH2 *histEcal_ET_a = new TH2F("histEcal_ET_a", "Aggregate ET in ECal", 31, histLowEx, histHighEx, 31, histLowEy, histHighEy);
   TH2 *histEcal_E_s = new TH2F("histEcal_E_s", "Single Event Energy in ECal", 31, histLowEx, histHighEx, 31, histLowEy, histHighEy);
   TH2 *histEcal_ET_s = new TH2F("histEcal_ET_s", "Single Event ET in ECal", 31, histLowEx, histHighEx, 31, histLowEy, histHighEy);
 
-  // Hcal realistic binning: 8x8 images cell size (eta, phi) = (y, x) = (0.1,5 pi/31)
-  float histLowHx  = -1.*(4*binWidth_HcalPhi);  
-  float histHighHx = +1.*(4*binWidth_HcalPhi);  
-  float histLowHy  = -1.*(4*binWidth_HcalEta);
-  float histHighHy = +1.*(4*binWidth_HcalEta);
+  // Hcal realistic binning: 8x8 images cell size (eta, phi) = (x, y) = (0.1,5 pi/31)
+  float histLowHx  = -1.*(4*binWidth_HcalEta);
+  float histHighHx = +1.*(4*binWidth_HcalEta);
+  float histLowHy  = -1.*(4*binWidth_HcalPhi);  
+  float histHighHy = +1.*(4*binWidth_HcalPhi);  
 
   TH2 *histHcal_E_a = new TH2F("histHcal_E_a", "Aggregate Energy in HCal", 8, histLowHx, histHighHx, 8, histLowHy, histHighHy);
   TH2 *histHcal_ET_a = new TH2F("histHcal_ET_a", "Aggregate ET in HCal", 8, histLowHx, histHighHx, 8, histLowHy, histHighHy);
   TH2 *histHcal_E_s = new TH2F("histHcal_E_s", "Single Event Energy in HCal", 8, histLowHx, histHighHx, 8, histLowHy, histHighHy);
   TH2 *histHcal_ET_s = new TH2F("histHcal_ET_s", "Single Event ET in HCal", 8, histLowHx, histHighHx, 8, histLowHy, histHighHy);
 
-  // Hcal ~same pixel size as Ecal: 32x32 images cell size (eta, phi) = (y, x) = 1/4 * (0.025, pi/126)
+  // Hcal ~same pixel size as Ecal: 32x32 images cell size (eta, phi) = (x, y) = 1/4 * (0.025, pi/126)
   TH2 *histHcal_E_a2 = new TH2F("histHcal_E_a2", "Aggregate Energy in HCal 2", 32, histLowHx, histHighHx, 32, histLowHy, histHighHy);
   TH2 *histHcal_ET_a2 = new TH2F("histHcal_ET_a2", "Aggregate ET in HCal 2", 32, histLowHx, histHighHx, 32, histLowHy, histHighHy);
   TH2 *histHcal_E_s2 = new TH2F("histHcal_E_s2", "Single Event Energy in HCal 2", 32, histLowHx, histHighHx, 32, histLowHy, histHighHy);
@@ -127,10 +127,9 @@ void makeImages(const char *inputFile)
   /**-----------------**/
  
   //Global and cartesian bin identifiers for searching through histograms
-  Int_t ng = -999; 
-  Int_t nx = -999; 
-  Int_t ny = -999; 
-  Int_t nz = -999;  
+  Int_t ng, nx, ny, nz = -999; 
+  Int_t ng1, nx1, ny1, nz1 = -999; 
+  Int_t newnx, newny = -999;
 
   // Number of electrons in an event
   Int_t enu = -999; 
@@ -162,6 +161,7 @@ void makeImages(const char *inputFile)
 
   // Variables for creating ECal and HCal images
   Float_t dPhi = -999.0;
+  Float_t dEta = -999.0;
 
   Int_t quad = -999;
   Float_t highEtaRange = -999.0;
@@ -184,7 +184,7 @@ void makeImages(const char *inputFile)
       /*-- Select the electron with the highest PT --*/
       /*---------------------------------------------*/
 
-      // Reassign curr_ePT to have ridiculously low value after each event, so search works properly //!
+      // Reassign curr_ePT to have ridiculously low value after each event, so search works properly
       curr_ePT = -999.0; 
 
       for(Int_t i = 0; i < enu; ++i)
@@ -204,24 +204,35 @@ void makeImages(const char *inputFile)
       if (enu > 0)
         {
 	  /*-- Find highest ET cell around highe's position --*/
+	  
+	  // Reset bin identifiers
+	  ng = 0;
+	  nx = 0;
+	  ny = 0;
+	  nz = 0;
+	  ng1 = 0;
+          nx1 = 0;
+          ny1 = 0;
+          nz1 = 0;
+	  newnx = 0;
+	  newny = 0;
 
 	  // First we need highe's cell
 	  // Therefore, assign highe_eta and highe_phi to be the value of the nearest cell's center
-	  ng = hEle_d->Fill(electron->Phi, electron->Eta, 0);
+	  ng = hEle_d->Fill(highe->Eta, highe->Phi, 0);
 	  hEle_d->GetBinXYZ(ng, nx, ny, nz);
 
-	  highe_phi = hEle_d_xAxis->GetBinCenter(nx);
-	  highe_eta = hEle_d_yAxis->GetBinCenter(ny);
+	  highe_eta = hEle_d_xAxis->GetBinCenter(nx);
+	  highe_phi = hEle_d_yAxis->GetBinCenter(ny);
 
 	  // Check that this is within range of the search for the highest ET cell in that region
 	  // Continue otherwise
 	  // We search in a +-0.2 (0.4x0.4 window centered on the cell) => 17x17 cell window centered on cell (8+1+8 x 8+1+8)
 	  // This means we must be at least 8 cells away from edge
 	  // |Eta| must be less than 2.5-8.*0.025
-	  // if( std::abs(highe_eta)>=(2.5 - 8.*0.025 ))
-	  if((ny < (8+1)) || (ny > nBins_EcalEta - 8))
+	  if((nx < (8+1)) || (nx > nBins_EcalEta - (8 + 1))) 
 	    {
-	      cout<<"Eta too close to edge, cannot search for highest ET cell."<<endl;
+	      // std::cout<<"Eta too close to edge, cannot search for highest ET cell."<<std::endl;
 	      continue; 
 	    }
 	  
@@ -229,11 +240,12 @@ void makeImages(const char *inputFile)
 	  // Find the ET of this cell in the Ecal
 	  // Want ET of cell that has center highe_eta, highe_phi
 	  // Loop over ECal and fill dummy histogram with ET, then get content of bin with center highe_eta, highe_phi
-	  std::cout << "Begin searching for high ET cell " << std::endl;
+	  
+	  // std::cout << "Begin searching for high ET cell " << std::endl;
 	  for(Int_t k = 0; k < branchECal->GetEntriesFast(); ++k)
 	    {
 	      ECal = (Tower*) branchECal->At(k);
-	      hECal_d ->Fill(ECal->Phi, ECal->Eta, ECal->ET);
+	      hECal_d ->Fill(ECal->Eta, ECal->Phi, ECal->ET);
 	    }
 	  
 	  highET = hECal_d->GetBinContent(nx, ny);
@@ -258,15 +270,15 @@ void makeImages(const char *inputFile)
 	  newhighe_phi = highe_phi;
 	  newhighET = highET;
 	  currET = -999.;
-	  eta_l = ny-8;
-	  eta_h = ny+8;
-	  phi_l = nx-8;
-	  phi_h = nx+8;
+	  eta_l = nx-8;
+	  eta_h = nx+8;
+	  phi_l = ny-8;
+	  phi_h = ny+8;
 	  I = -999;
-	  
+
 	  for(Int_t i = phi_l; i <= phi_h; i++)
 	    {
-	      for(Int_t j = phi_h; j <= eta_h; j++)
+	      for(Int_t j = eta_l; j <= eta_h; j++) 
 		{
 		  // If phi is out of bounds, wrap around because modular
 		  if(i < 1)
@@ -279,33 +291,33 @@ void makeImages(const char *inputFile)
 		    }
 		  else
 		    {
-		      I=i;
+		      I = i;
 		    }
 
-		  currET = hECal_d->GetBinContent(I, j);
+		  currET = hECal_d->GetBinContent(j, I);
 
-		  if(currET >= highET)
+		  if(currET > newhighET)
 		    {
-		      highET = currET;
-		      newhighe_phi = hECal_d_xAxis->GetBinCenter(I);
-		      newhighe_eta = hECal_d_yAxis->GetBinCenter(j);
-		      nx = I;
-		      ny = j;
+		      newhighET = currET;
+		      newhighe_eta = hECal_d_xAxis->GetBinCenter(j);
+		      newhighe_phi = hECal_d_yAxis->GetBinCenter(I);
+		      newny = I;
+		      newnx = j;
 		    }
 		}
 	    } 
 
 	  // Check that the new eta is within range
 	  // Continue otherwise
-	  if((ny < (15+1)) || (ny > nBins_EcalEta - 15))
+	  if((nx < (15+1)) || (nx > nBins_EcalEta - (15 + 1)))
             {
-              cout<<"Eta too close to edge, cannot create image."<<endl;
+	      // std::cout<<"Eta too close to edge, cannot create image."<<std::endl;
               continue;
             }
-
-	  
+	  	  
 	  /** Now (finally) create the ECal and HCal images **/
 	  dPhi = -999.;
+	  dEta = -999.;
 
 	  // Loop over Ecal Tower entries
 	  for(Int_t j = 0; j < branchECal->GetEntriesFast(); ++j)
@@ -316,22 +328,21 @@ void makeImages(const char *inputFile)
               //std::cout << "  e.PT: " << highe->PT << std::endl;
               //std::cout << "  ECal.Phi-e.Phi: " << ECal->Phi - highe->Phi << std::endl;
               //std::cout << "  ECal.Eta-e.Eta: " << ECal->Eta - highe->Eta << std::endl;
+
+	      dEta = ECal->Eta - newhighe_eta;
+	      dPhi = atan2(sin(ECal->Phi - newhighe_phi), cos(ECal->Phi - newhighe_phi));
               
 	      // Check Eta is within image range
-	      if(std::abs(ECal->Eta - newhighe_eta) < (15.5*binWidth_EcalEta))
+	      if(std::abs(dEta) < (15.5*binWidth_EcalEta))
 		{
 		  
 		  // Check Phi is within image range
-		  if((pi - std::abs(std::abs(ECal->Phi - newhighe_phi) - pi)) < (15.5*binWidth_EcalPhi))
+		  if(std::abs(dPhi) < (15.5*binWidth_EcalPhi))
 		    {
-	
-		      dPhi = atan2(sin(ECal->Phi - newhighe_phi), cos(ECal->Phi - newhighe_phi));
-
-		      histEcal_E_a->Fill(dPhi, ECal->Eta - newhighe_eta, ECal->E);
-		      histEcal_E_s->Fill(dPhi, ECal->Eta - newhighe_eta, ECal->E);
-		      histEcal_ET_a->Fill(dPhi, ECal->Eta - newhighe_eta, ECal->ET);
-		      histEcal_ET_s->Fill(dPhi, ECal->Eta - newhighe_eta, ECal->ET);
-
+		      histEcal_E_a->Fill( dEta, dPhi, ECal->E);
+		      histEcal_E_s->Fill( dEta, dPhi, ECal->E);
+		      histEcal_ET_a->Fill(dEta, dPhi, ECal->ET);
+		      histEcal_ET_s->Fill(dEta, dPhi, ECal->ET);
 		    }
 		}
 	    }
@@ -344,24 +355,24 @@ void makeImages(const char *inputFile)
 
 	      // Find which cell newhighe_eta and newhighe_phi are near
 	      // Fill dummy histo and get bins
-	      ng = hHCal_d->Fill(newhighe_phi, newhighe_eta, 0);
-	      hHCal_d->GetBinXYZ(ng, nx, ny, nz);
+	      ng1 = hHCal_d->Fill(newhighe_eta, newhighe_phi, 0);
+	      hHCal_d->GetBinXYZ(ng1, nx1, ny1, nz1);
 
-	      phi0 = hHCal_d_xAxis->GetBinCenter(nx);
-	      eta0 = hHCal_d_yAxis->GetBinCenter(ny);
+	      eta0 = hHCal_d_xAxis->GetBinCenter(nx1);
+	      phi0 = hHCal_d_yAxis->GetBinCenter(ny1);
 
 	      // Figure out which quadrant it's in to figure out which HCal cells to include
 	      // Assign maximum allowed deviation from phi0, eta0
 	      //
-	      //          +eta
+	      //          +phi
 	      //            |
-	      //      2     |    1
+	      //      4     |    1
 	      //            |
-	      //-phi---(phi0,eta0)--- +phi
+	      //-eta---(phi0,eta0)--- +eta
 	      //            |
-	      //      3     |    4
+	      //      3     |    2
 	      //            |
-	      //          -eta
+	      //          -phi
 	      //
 	      quad = -999;
 	      highEtaRange = -999.;
@@ -413,18 +424,22 @@ void makeImages(const char *inputFile)
                   lowEtaRange  = - 4.5*binWidth_HcalEta;
 
 		}
-	      
-	      //Check Eta is within image range
-              if((HCal->Eta - eta0)<highEtaRange && (HCal->Eta - eta0)>lowEtaRange)
+
+	      dEta = HCal->Eta - eta0;
+	      dPhi = atan2(sin(HCal->Phi - phi0), cos(HCal->Phi - phi0));
+
+	      // Check Eta is within image range
+              if(dEta < highEtaRange && dEta > lowEtaRange)
 		{
-		  //Check Phi is within image range
-		  dPhi = atan2(sin(HCal->Phi - phi0), cos(HCal->Phi - phi0));
-		  if(dPhi<highPhiRange && dPhi>lowPhiRange)
+
+		  // Check Phi is within image range
+		  if(dPhi < highPhiRange && dPhi > lowPhiRange)
 		    {
-		      histHcal_E_a->Fill(dPhi, HCal->Eta - eta0, HCal->E);
-		      histHcal_E_s->Fill(dPhi, HCal->Eta - eta0, HCal->E);
-		      histHcal_ET_a->Fill(dPhi, HCal->Eta - eta0, HCal->ET);
-		      histHcal_ET_s->Fill(dPhi, HCal->Eta - eta0, HCal->ET);
+		      histHcal_E_a->Fill( dEta, dPhi, HCal->E);
+		      histHcal_E_s->Fill( dEta, dPhi, HCal->E);
+		      histHcal_ET_a->Fill(dEta, dPhi, HCal->ET);
+		      histHcal_ET_s->Fill(dEta, dPhi, HCal->ET);
+		      
 		    }
 		}
 	    }
@@ -460,19 +475,20 @@ void makeImages(const char *inputFile)
 		  // if( ( j!=1 ) || (i != 31) ) // Logical inverse of (j==1 and i==31) = (j!=1 or i!=31) one of DeMorgan's laws
 		  if( !(i==31 && j==1) )
 		    {
-		      fEcal_E <<", ";
-		      fEcal_ET <<", ";
+		      fEcal_E <<",";
+		      fEcal_ET <<",";
 		    }
 		  
 		}
 	    }
+
 	  // Go to new line and clear single histogram content
 	  fEcal_E << "\n";
 	  fEcal_ET << "\n";
 	  histEcal_E_s->Reset("ICESM");
 	  histEcal_ET_s->Reset("ICESM");
 
-	  //HCal images
+	  // HCal images
 	  for(Int_t j=32; j>=1; j--)
             {
               for(Int_t i=1; i<=32; i++)
@@ -485,8 +501,8 @@ void makeImages(const char *inputFile)
 		  //if( (j!=1) || (i!=31) ){ // Logical inverse of (j==1 and i==31) = (j!=1 or i!=31) one of DeMorgan's laws        
 		  if( !(i==31 && j==1) )
 		    {
-		      fHcal_E <<", ";
-		      fHcal_ET <<", ";
+		      fHcal_E <<",";
+		      fHcal_ET <<",";
 		    }
 		}
             }
@@ -495,6 +511,9 @@ void makeImages(const char *inputFile)
           fHcal_ET << "\n";
           histHcal_E_s->Reset("ICESM");
           histHcal_ET_s->Reset("ICESM");
+
+	  // Clear content of histogram used in highET cell search
+	  hECal_d->Reset("ICESM");
 
 	} // End of if number of electrons>0
 
@@ -515,8 +534,8 @@ void makeImages(const char *inputFile)
 
   // Ecal_E
   TCanvas *cEcal_E = new TCanvas;
-  histEcal_E_a->GetXaxis()->SetTitle("Ecal Phi - High ET Phi");
-  histEcal_E_a->GetYaxis()->SetTitle("Ecal Eta - High ET Eta");
+  histEcal_E_a->GetXaxis()->SetTitle("Ecal Eta - High ET Eta");
+  histEcal_E_a->GetYaxis()->SetTitle("Ecal Phi - High ET Phi");
   histEcal_E_a->Draw("colz");
     
   TImage *imgEcal_E = TImage::Create();
@@ -526,8 +545,8 @@ void makeImages(const char *inputFile)
 
   // Ecal_ET
   TCanvas *cEcal_ET = new TCanvas;
-  histEcal_ET_a->GetXaxis()->SetTitle("Ecal Phi - High ET Phi");
-  histEcal_ET_a->GetYaxis()->SetTitle("Ecal Eta - High ET Eta");
+  histEcal_ET_a->GetXaxis()->SetTitle("Ecal Eta - High ET Eta");
+  histEcal_ET_a->GetYaxis()->SetTitle("Ecal Phi - High ET Phi");
   histEcal_ET_a->Draw("colz");
 
   TImage *imgEcal_ET = TImage::Create();
@@ -537,8 +556,8 @@ void makeImages(const char *inputFile)
 
   // Hcal_E                             
   TCanvas *cHcal_E = new TCanvas;
-  histHcal_E_a->GetXaxis()->SetTitle("Hcal Phi - High ET Phi");
-  histHcal_E_a->GetYaxis()->SetTitle("Hcal Eta - High ET Eta");
+  histHcal_E_a->GetXaxis()->SetTitle("Hcal Eta - High ET Eta");
+  histHcal_E_a->GetYaxis()->SetTitle("Hcal Phi - High ET Phi");
   histHcal_E_a->Draw("colz");
 
   TImage *imgHcal_E = TImage::Create();
@@ -548,23 +567,12 @@ void makeImages(const char *inputFile)
 
   // Hcal_ET
   TCanvas *cHcal_ET = new TCanvas;
-  histHcal_ET_a->GetXaxis()->SetTitle("Hcal Phi - High ET Phi");
-  histHcal_ET_a->GetYaxis()->SetTitle("Hcal Eta - High ET Eta");
+  histHcal_ET_a->GetXaxis()->SetTitle("Hcal Eta - High ET Eta");
+  histHcal_ET_a->GetYaxis()->SetTitle("Hcal Phi - High ET Phi");
   histHcal_ET_a->Draw("colz");
 
   TImage *imgHcal_ET = TImage::Create();
   imgHcal_ET->FromPad(cHcal_ET);
   imgHcal_ET->WriteImage("Hcal_ET.png");
 
-
-  /* TCanvas *c3 = new TCanvas;
-
-  histH2->GetXaxis()->SetTitle("hcal.Phi-e.Phi");
-  histH2->GetYaxis()->SetTitle("hcal.Eta-e.Eta");
-  histH2->Draw("colz");
-
-  TImage *img3 = TImage::Create();
-  img3->FromPad(c3);
-  img3->WriteImage("hih.png");*/
-  
 }
