@@ -499,7 +499,7 @@ void makeImages(const char *inputFile)
 
 		  // For all entries except the one at the very end of the line, namely j=1, i=31, add a comma and a space to separate                                      
 		  //if( (j!=1) || (i!=31) ){ // Logical inverse of (j==1 and i==31) = (j!=1 or i!=31) one of DeMorgan's laws        
-		  if( !(i==31 && j==1) )
+		  if( !(i==32 && j==1) )
 		    {
 		      fHcal_E <<",";
 		      fHcal_ET <<",";
