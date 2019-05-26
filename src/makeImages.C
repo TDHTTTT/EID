@@ -493,12 +493,12 @@ void makeImages(const char *inputFile)
             {
               for(Int_t i=1; i<=32; i++)
                 {
-                  fHcal_E << histHcal_E_s->GetBinContent(i,j);
-                  fHcal_ET << histHcal_ET_s->GetBinContent(i,j);
+                  fHcal_E << histHcal_E_s2->GetBinContent(i,j); 
+                  fHcal_ET << histHcal_ET_s2->GetBinContent(i,j);
                 
 
-		  // For all entries except the one at the very end of the line, namely j=1, i=31, add a comma and a space to separate                                      
-		  //if( (j!=1) || (i!=31) ){ // Logical inverse of (j==1 and i==31) = (j!=1 or i!=31) one of DeMorgan's laws        
+		  // For all entries except the one at the very end of the line, namely j=1, i=32, add a comma and a space to separate                                      
+		  //if( (j!=1) || (i!=32) ){ // Logical inverse of (j==1 and i==32) = (j!=1 or i!=32) one of DeMorgan's laws        
 		  if( !(i==32 && j==1) )
 		    {
 		      fHcal_E <<",";
@@ -511,6 +511,8 @@ void makeImages(const char *inputFile)
           fHcal_ET << "\n";
           histHcal_E_s->Reset("ICESM");
           histHcal_ET_s->Reset("ICESM");
+          histHcal_E_s2->Reset("ICESM"); 
+          histHcal_ET_s2->Reset("ICESM"); 
 
 	  // Clear content of histogram used in highET cell search
 	  hECal_d->Reset("ICESM");
