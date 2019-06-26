@@ -172,6 +172,7 @@ void makeImages(const char *inputFile)
   /**************************/
   /** Loop over all events **/
   /**************************/
+  // std::cout << "# of Events: " << numberOfEntries << std::endl;
   for(Int_t entry = 0; entry < numberOfEntries; ++entry)
     {
 
@@ -323,11 +324,11 @@ void makeImages(const char *inputFile)
 	  for(Int_t j = 0; j < branchECal->GetEntriesFast(); ++j)
             {
               ECal = (Tower*) branchECal->At(j);
-              //std::cout << "  Ecal#: " << j << std::endl;
-              //std::cout << "  Ecal.ET: " << ECal->ET << std::endl;
-              //std::cout << "  e.PT: " << highe->PT << std::endl;
-              //std::cout << "  ECal.Phi-e.Phi: " << ECal->Phi - highe->Phi << std::endl;
-              //std::cout << "  ECal.Eta-e.Eta: " << ECal->Eta - highe->Eta << std::endl;
+              // std::cout << "  Ecal#: " << j << std::endl;
+              // std::cout << "  Ecal.ET: " << ECal->ET << std::endl;
+              // std::cout << "  e.PT: " << highe->PT << std::endl;
+              // std::cout << "  ECal.Phi-e.Phi: " << ECal->Phi - highe->Phi << std::endl;
+              // std::cout << "  ECal.Eta-e.Eta: " << ECal->Eta - highe->Eta << std::endl;
 
 	      dEta = ECal->Eta - newhighe_eta;
 	      dPhi = atan2(sin(ECal->Phi - newhighe_phi), cos(ECal->Phi - newhighe_phi));
@@ -347,14 +348,15 @@ void makeImages(const char *inputFile)
 		}
 	    }
 	  
-
 	  // Loop over Hcal Tower entries
 	  for(Int_t k = 0; k < branchHCal->GetEntriesFast(); ++k)
             {
               HCal = (Tower*) branchHCal->At(k);
 
+	      
 	      // Find which cell newhighe_eta and newhighe_phi are near
 	      // Fill dummy histo and get bins
+	      // Note: Really only need to do this once, fix this later
 	      ng1 = hHCal_d->Fill(newhighe_eta, newhighe_phi, 0);
 	      hHCal_d->GetBinXYZ(ng1, nx1, ny1, nz1);
 
@@ -425,13 +427,13 @@ void makeImages(const char *inputFile)
 
 		}
 
+
 	      dEta = HCal->Eta - eta0;
 	      dPhi = atan2(sin(HCal->Phi - phi0), cos(HCal->Phi - phi0));
 
 	      // Check Eta is within image range
               if(dEta < highEtaRange && dEta > lowEtaRange)
 		{
-
 		  // Check Phi is within image range
 		  if(dPhi < highPhiRange && dPhi > lowPhiRange)
 		    {
@@ -439,26 +441,25 @@ void makeImages(const char *inputFile)
 		      histHcal_E_s->Fill( dEta, dPhi, HCal->E);
 		      histHcal_ET_a->Fill(dEta, dPhi, HCal->ET);
 		      histHcal_ET_s->Fill(dEta, dPhi, HCal->ET);
-		      
 		    }
 		}
 	    }
 	
-
 	  /*-- Convert Hcal histogram to have same pixel size --*/
 	  
 	  // Original size is 8x8, want to turn this into 32x32 but keep same content
+	  // Loop over new histogram cells, fill each 8x8 block witih 1/16th the value from histH. 
+	  // Thus each new pixel has 1/16th the value that the old larger pixel did so the sum of energy and ET is the same
+	  // Other option would be to fill each cell with the original content 
 	  // Note bin=0 is underflow, bin = 33 is overflow
-	  // Loop over new histogram cells, fill each 8x8 block witih the value from histH. 
-	  // Thus each new pixel has same value that the old larger pixel did
 	  for(Int_t i=1; i<=32; i++)
 	    {
 	      for(Int_t j=1; j<=32; j++)
 		{
-		  histHcal_E_a2->SetBinContent( i, j, histHcal_E_a->GetBinContent( (int(i-1)/4 + 1), (int(j-1)/4 + 1) ) );
-		  histHcal_E_s2->SetBinContent( i, j, histHcal_E_s->GetBinContent( (int(i-1)/4 + 1), (int(j-1)/4 + 1) ) );
-		  histHcal_ET_a2->SetBinContent( i, j, histHcal_ET_a->GetBinContent( (int(i-1)/4 + 1), (int(j-1)/4 + 1) ) );
-                  histHcal_ET_s2->SetBinContent( i, j, histHcal_ET_s->GetBinContent( (int(i-1)/4 + 1), (int(j-1)/4 + 1) ) );
+		  histHcal_E_a2->SetBinContent( i, j,  (1./16.)*histHcal_E_a->GetBinContent( (int(i-1)/4 + 1), (int(j-1)/4 + 1) ) );
+		  histHcal_E_s2->SetBinContent( i, j,  (1./16.)*histHcal_E_s->GetBinContent( (int(i-1)/4 + 1), (int(j-1)/4 + 1) ) );
+		  histHcal_ET_a2->SetBinContent( i, j, (1./16.)*histHcal_ET_a->GetBinContent( (int(i-1)/4 + 1), (int(j-1)/4 + 1) ) );
+                  histHcal_ET_s2->SetBinContent( i, j, (1./16.)*histHcal_ET_s->GetBinContent( (int(i-1)/4 + 1), (int(j-1)/4 + 1) ) );
 		}
 	    }
 
@@ -495,7 +496,6 @@ void makeImages(const char *inputFile)
                 {
                   fHcal_E << histHcal_E_s2->GetBinContent(i,j); 
                   fHcal_ET << histHcal_ET_s2->GetBinContent(i,j);
-                
 
 		  // For all entries except the one at the very end of the line, namely j=1, i=32, add a comma and a space to separate                                      
 		  //if( (j!=1) || (i!=32) ){ // Logical inverse of (j==1 and i==32) = (j!=1 or i!=32) one of DeMorgan's laws        
@@ -507,9 +507,10 @@ void makeImages(const char *inputFile)
 		}
             }
           // Go to new line in file (new event) and clear single histogram content
-          fHcal_E << "\n";
+	  fHcal_E << "\n";
           fHcal_ET << "\n";
-          histHcal_E_s->Reset("ICESM");
+	  
+	  histHcal_E_s->Reset("ICESM");
           histHcal_ET_s->Reset("ICESM");
           histHcal_E_s2->Reset("ICESM"); 
           histHcal_ET_s2->Reset("ICESM"); 
