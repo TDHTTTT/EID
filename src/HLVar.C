@@ -466,8 +466,8 @@ void HLVar(){
     /************************/
     /** Store HL variables **/
     /************************/
-   // ofHLVar << Rhad <<","<< wEta2 <<","<< Rphi <<","<< Reta <<","<< sigmaEtaEta <<","<< DeltaR03 <<","<< DeltaR04 <<"\n";
-   // ofHLVavr << Rhadd <<","<< wEta22 <<","<< Rphii <<","<< Retaa <<","<< sigmaEtaEtaa <<","<< DeltaR033 <<","<< DeltaR044 <<"\n";
+    ofHLVar << Rhad <<","<< wEta2 <<","<< Rphi <<","<< Reta <<","<< sigmaEtaEta <<","<< DeltaR03 <<","<< DeltaR04 <<"\n";
+    ofHLVarr << Rhadd <<","<< wEta22 <<","<< Rphii <<","<< Retaa <<","<< sigmaEtaEtaa <<","<< DeltaR033 <<","<< DeltaR044 <<"\n";
    
   // hs7.Add(h77);
   // Reset everything (histograms and variables)
