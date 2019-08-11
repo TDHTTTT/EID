@@ -6,3 +6,4 @@ output/
 *.swp
 tags
 train/result
+.ipynb_checkpoints/
