@@ -187,10 +187,10 @@ void HLVar(){
   /** Create csv files to store HL var data **/
   /*******************************************/
   std::ofstream ofHLVar;
-  ofHLVar.open("HLVar.csv");
+  ofHLVar.open("HLVar_bg.csv");
 
   std::ofstream ofHLVarr;
-  ofHLVarr.open("HLVarr.csv");
+  ofHLVarr.open("HLVar_sig.csv");
 
 
   /******************************************/
