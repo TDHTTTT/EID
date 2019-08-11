@@ -199,16 +199,16 @@ void HLVar(){
 
   // For reference: http://www.cplusplus.com/reference/iostream/ifstream/
   // Background:
-  std::ifstream infEcal_E  ("/c/Users/tdhttt/workspace/hep/hpc-data/bg/Ecal_E.csv");
-  std::ifstream infEcal_ET ("/c/Users/tdhttt/workspace/hep/hpc-data/bg/Ecal_ET.csv");
-  std::ifstream infHcal_E  ("/c/Users/tdhttt/workspace/hep/hpc-data/bg/Hcal_E.csv");
-  std::ifstream infHcal_ET ("/c/Users/tdhttt/workspace/hep/hpc-data/bg/Hcal_ET.csv");
+  std::ifstream infEcal_E  ("/c/Users/tdhttt/workspace/hep/hpc-data/csv/bg/Ecal_E.csv");
+  std::ifstream infEcal_ET ("/c/Users/tdhttt/workspace/hep/hpc-data/csv/bg/Ecal_ET.csv");
+  std::ifstream infHcal_E  ("/c/Users/tdhttt/workspace/hep/hpc-data/csv/bg/Hcal_E.csv");
+  std::ifstream infHcal_ET ("/c/Users/tdhttt/workspace/hep/hpc-data/csv/bg/Hcal_ET.csv");
 
   // Signal:
-  std::ifstream infEcal_EE  ("/c/Users/tdhttt/workspace/hep/hpc-data/sigz/Ecal_E.csv");
-  std::ifstream infEcal_ETT ("/c/Users/tdhttt/workspace/hep/hpc-data/sigz/Ecal_ET.csv");
-  std::ifstream infHcal_EE  ("/c/Users/tdhttt/workspace/hep/hpc-data/sigz/Hcal_E.csv");
-  std::ifstream infHcal_ETT ("/c/Users/tdhttt/workspace/hep/hpc-data/sigz/Hcal_ET.csv");
+  std::ifstream infEcal_EE  ("/c/Users/tdhttt/workspace/hep/hpc-data/csv/sig/Ecal_E.csv");
+  std::ifstream infEcal_ETT ("/c/Users/tdhttt/workspace/hep/hpc-data/csv/sig/Ecal_ET.csv");
+  std::ifstream infHcal_EE  ("/c/Users/tdhttt/workspace/hep/hpc-data/csv/sig/Hcal_E.csv");
+  std::ifstream infHcal_ETT ("/c/Users/tdhttt/workspace/hep/hpc-data/csv/sig/Hcal_ET.csv");
 
   // Define size of each row (number of elements)
   // Define an array to keep elements in         
