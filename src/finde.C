@@ -45,6 +45,9 @@ int findV(std::vector<float> v, float e)
 
 void finde(const char *inputFile)
 {
+  std::ofstream fePT;
+  fePT.open("ePT.csv");
+
   gSystem->Load("libDelphes");
 
   // Create chain of root trees
@@ -124,6 +127,7 @@ void finde(const char *inputFile)
         highe = electron;
       }
       log(2) << "  e#" << i << ", PT=" << electron->PT << ", HighePT:" << highe->PT << ", Eta: " << electron->Eta << ", Phi: " << electron->Phi << std::endl;
+      fePT << electron->PT << "\n";
     }
     int ii = findV(beeta,electron->Eta);
     //std::cout << "Position of e: " << ii << std::endl;
@@ -222,28 +226,30 @@ void finde(const char *inputFile)
     float maxheta = *std::max_element(std::begin(heta), std::end(heta));
     float minheta = *std::min_element(std::begin(heta), std::end(heta));
     log(5) << "Max heta: " << maxheta << ", Min heta: " << minheta << std::endl;
+
+    fePT.close();
     
 
     //Edit axis and save png
-    TCanvas *c1 = new TCanvas;
+   // TCanvas *c1 = new TCanvas;
 
-    histE->GetXaxis()->SetTitle("ecal.Eta-e.Eta");
-    histE->GetYaxis()->SetTitle("ecal.Phi-e.Phi");
-    histE->Draw("colz");
-    
-    TImage *img1 = TImage::Create();
-    img1->FromPad(c1);
-    img1->WriteImage("hie.png");
+   // histE->GetXaxis()->SetTitle("ecal.Eta-e.Eta");
+   // histE->GetYaxis()->SetTitle("ecal.Phi-e.Phi");
+   // histE->Draw("colz");
+   // 
+   // TImage *img1 = TImage::Create();
+   // img1->FromPad(c1);
+   // img1->WriteImage("hie.png");
 
-    TCanvas *c2 = new TCanvas;
+   // TCanvas *c2 = new TCanvas;
 
-    histH->GetXaxis()->SetTitle("hcal.Eta-e.Eta");
-    histH->GetYaxis()->SetTitle("hcal.Phi-e.Phi");
-    histH->Draw("colz");
+   // histH->GetXaxis()->SetTitle("hcal.Eta-e.Eta");
+   // histH->GetYaxis()->SetTitle("hcal.Phi-e.Phi");
+   // histH->Draw("colz");
 
-    TImage *img2 = TImage::Create();
-    img2->FromPad(c2);
-    img2->WriteImage("hih.png");
+   // TImage *img2 = TImage::Create();
+   // img2->FromPad(c2);
+   // img2->WriteImage("hih.png");
 
 }
 
