@@ -416,6 +416,7 @@ void HLVar(){
     std::vector<Float_t> DRs = {-999., -999.};
     Float_t Ecal_binCenter_x = 16; // (31/2)+0.5
     Float_t Ecal_binCenter_y = Ecal_binCenter_x; // Since image is square
+    Float_t ePT = -999.;
 
     Rhad = get_Rhad(histEcal_ET, histHcal_ET);
     wEta2 = get_wEta2(Ecal_binCenter_x, Ecal_binCenter_y, histEcal_E);
@@ -444,6 +445,7 @@ void HLVar(){
     Float_t DeltaR033 = -999.;
     Float_t DeltaR044 = -999.;
     std::vector<Float_t> DRss = {-999., -999.};
+    Float_t ePTT = -999.;
 
     Rhadd = get_Rhad(histEcal_ETT, histHcal_ETT);
     wEta22 = get_wEta2(Ecal_binCenter_x, Ecal_binCenter_y, histEcal_EE);

@@ -137,10 +137,12 @@ void makeImages(const char *inputFile)
   // Variable used to find high PT electron
   Float_t curr_ePT = -999.0;
 
-  // High PT electron's Eta and Phi, corresponding ECal cell's ET
+  // High PT electron's Eta and Phi, corresponding ECal cell's ET and PT
   Float_t highET    = -999.0;
   Float_t highe_phi = -999.0;
   Float_t highe_eta = -999.0;
+  Float_t highe_PT = -999.0;
+
 
   // Variables for finding highest ECal ET cell in region (+-8 cells) of electron
   Float_t currET = -999.0;
@@ -225,6 +227,9 @@ void makeImages(const char *inputFile)
 
 	  highe_eta = hEle_d_xAxis->GetBinCenter(nx);
 	  highe_phi = hEle_d_yAxis->GetBinCenter(ny);
+
+    // Store highe's PT to analyze the AUC dependence of PT
+
 
 	  // Check that this is within range of the search for the highest ET cell in that region
 	  // Continue otherwise
