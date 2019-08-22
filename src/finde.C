@@ -191,7 +191,7 @@ void finde(const char *inputFile)
       {
         tt++;
       }
-      log(6) << "High ECal: " << jj << ", eta: " << highECal->Eta << ", phi:" << highECal->Phi << ", ET:" << highECal->ET << ", Total: " << tt << std::endl; 
+      log(3) << "High ECal: " << jj << ", eta: " << highECal->Eta << ", phi:" << highECal->Phi << ", ET:" << highECal->ET << ", Total: " << tt << std::endl;
 
       for(Int_t k = 0; k < branchHCal->GetEntriesFast(); ++k)
       {
