@@ -29,7 +29,7 @@ void makeImages(const char *inputFile)
   fHcal_ET.open("Hcal_ET.csv");
 
   std::ofstream fePT;
-  fePT.open("ePT.csv")
+  fePT.open("ePT.csv");
 
   /*********************************/
   /** Delphes preliminary actions **/
