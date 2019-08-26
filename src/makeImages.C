@@ -349,7 +349,6 @@ void makeImages(const char *inputFile)
             histEcal_E_s->Fill( dEta, dPhi, ECal->E);
             histEcal_ET_a->Fill(dEta, dPhi, ECal->ET);
             histEcal_ET_s->Fill(dEta, dPhi, ECal->ET);
-            fePT << highe_PT << "\n";
           }
         }
       }
@@ -492,6 +491,7 @@ void makeImages(const char *inputFile)
       // Go to new line and clear single histogram content
       fEcal_E << "\n";
       fEcal_ET << "\n";
+      fePT << highe_PT << "\n";
       histEcal_E_s->Reset("ICESM");
       histEcal_ET_s->Reset("ICESM");
 
