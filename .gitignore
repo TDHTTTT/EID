@@ -7,3 +7,4 @@ output/
 tags
 train/result
 .ipynb_checkpoints/
+*_exp.*
