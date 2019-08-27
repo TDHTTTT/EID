@@ -72,6 +72,7 @@ void makeImages(const char *inputFile)
   // Binning variables for ECal and HCal
   Int_t nBins_EcalPhi = 252;
   Int_t nBins_EcalEta = 200;
+  Int_t tot = 0;
   Float_t binWidth_EcalPhi = pi/126.;
   Float_t binWidth_EcalEta = 0.025;
 
@@ -175,7 +176,7 @@ void makeImages(const char *inputFile)
   /**************************/
   /** Loop over all events **/
   /**************************/
-  std::cout << "Creating images for " << numberOfEntries << "events..." << std::endl;
+  std::cout << "Creating images for " << numberOfEntries << " events..." << std::endl;
   for(Int_t entry = 0; entry < numberOfEntries; ++entry)
   {
 
@@ -221,6 +222,7 @@ void makeImages(const char *inputFile)
       nz1 = 0;
       newnx = 0;
       newny = 0;
+      tot += 1;
 
       // First we need highe's cell
       // Therefore, assign highe_eta and highe_phi to be the value of the nearest cell's center
@@ -584,5 +586,5 @@ void makeImages(const char *inputFile)
   imgHcal_ET->FromPad(cHcal_ET);
   imgHcal_ET->WriteImage("Hcal_ET.png");
 
-  std::cout << "Done" << std::endl;
+  std::cout << "Done! There are " << tot << " electron events."<< std::endl;
 }
