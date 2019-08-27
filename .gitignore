@@ -4,6 +4,7 @@ data/
 log/
 output/
 *.swp
+*.swo
 tags
 train/result
 .ipynb_checkpoints/
