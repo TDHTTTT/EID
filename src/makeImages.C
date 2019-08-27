@@ -175,7 +175,7 @@ void makeImages(const char *inputFile)
   /**************************/
   /** Loop over all events **/
   /**************************/
-  // std::cout << "# of Events: " << numberOfEntries << std::endl;
+  std::cout << "Creating images for " << numberOfEntries << "events..." << std::endl;
   for(Int_t entry = 0; entry < numberOfEntries; ++entry)
   {
 
@@ -524,64 +524,65 @@ void makeImages(const char *inputFile)
       // Clear content of histogram used in highET cell search
       hECal_d->Reset("ICESM");
 
-  } // End of if number of electrons>0
-} // End event loop
+    } // End of if number of electrons>0
+  } // End event loop
 
 
-/*----------------------------------------------*/
-/* Plot Histograms and Save Histogram content --*/
-/*----------------------------------------------*/
+  /*----------------------------------------------*/
+  /* Plot Histograms and Save Histogram content --*/
+  /*----------------------------------------------*/
 
-/** Close files **/
-fEcal_E.close();
-fEcal_ET.close();
-fHcal_E.close();
-fHcal_ET.close();
-fePT.close();
+  /** Close files **/
+  fEcal_E.close();
+  fEcal_ET.close();
+  fHcal_E.close();
+  fHcal_ET.close();
+  fePT.close();
 
-/** Edit axis and save aggregate png **/
+  /** Edit axis and save aggregate png **/
 
-// Ecal_E
-TCanvas *cEcal_E = new TCanvas;
-histEcal_E_a->GetXaxis()->SetTitle("Ecal Eta - High ET Eta");
-histEcal_E_a->GetYaxis()->SetTitle("Ecal Phi - High ET Phi");
-histEcal_E_a->Draw("colz");
+  // Ecal_E
+  TCanvas *cEcal_E = new TCanvas;
+  histEcal_E_a->GetXaxis()->SetTitle("Ecal Eta - High ET Eta");
+  histEcal_E_a->GetYaxis()->SetTitle("Ecal Phi - High ET Phi");
+  histEcal_E_a->Draw("colz");
 
-TImage *imgEcal_E = TImage::Create();
-imgEcal_E->FromPad(cEcal_E);
-imgEcal_E->WriteImage("Ecal_E.png");
-
-
-// Ecal_ET
-TCanvas *cEcal_ET = new TCanvas;
-histEcal_ET_a->GetXaxis()->SetTitle("Ecal Eta - High ET Eta");
-histEcal_ET_a->GetYaxis()->SetTitle("Ecal Phi - High ET Phi");
-histEcal_ET_a->Draw("colz");
-
-TImage *imgEcal_ET = TImage::Create();
-imgEcal_ET->FromPad(cEcal_ET);
-imgEcal_ET->WriteImage("Ecal_ET.png");
+  TImage *imgEcal_E = TImage::Create();
+  imgEcal_E->FromPad(cEcal_E);
+  imgEcal_E->WriteImage("Ecal_E.png");
 
 
-// Hcal_E                             
-TCanvas *cHcal_E = new TCanvas;
-histHcal_E_a->GetXaxis()->SetTitle("Hcal Eta - High ET Eta");
-histHcal_E_a->GetYaxis()->SetTitle("Hcal Phi - High ET Phi");
-histHcal_E_a->Draw("colz");
+  // Ecal_ET
+  TCanvas *cEcal_ET = new TCanvas;
+  histEcal_ET_a->GetXaxis()->SetTitle("Ecal Eta - High ET Eta");
+  histEcal_ET_a->GetYaxis()->SetTitle("Ecal Phi - High ET Phi");
+  histEcal_ET_a->Draw("colz");
 
-TImage *imgHcal_E = TImage::Create();
-imgHcal_E->FromPad(cHcal_E);
-imgHcal_E->WriteImage("Hcal_E.png");
+  TImage *imgEcal_ET = TImage::Create();
+  imgEcal_ET->FromPad(cEcal_ET);
+  imgEcal_ET->WriteImage("Ecal_ET.png");
 
 
-// Hcal_ET
-TCanvas *cHcal_ET = new TCanvas;
-histHcal_ET_a->GetXaxis()->SetTitle("Hcal Eta - High ET Eta");
-histHcal_ET_a->GetYaxis()->SetTitle("Hcal Phi - High ET Phi");
-histHcal_ET_a->Draw("colz");
+  // Hcal_E                             
+  TCanvas *cHcal_E = new TCanvas;
+  histHcal_E_a->GetXaxis()->SetTitle("Hcal Eta - High ET Eta");
+  histHcal_E_a->GetYaxis()->SetTitle("Hcal Phi - High ET Phi");
+  histHcal_E_a->Draw("colz");
 
-TImage *imgHcal_ET = TImage::Create();
-imgHcal_ET->FromPad(cHcal_ET);
-imgHcal_ET->WriteImage("Hcal_ET.png");
+  TImage *imgHcal_E = TImage::Create();
+  imgHcal_E->FromPad(cHcal_E);
+  imgHcal_E->WriteImage("Hcal_E.png");
 
+
+  // Hcal_ET
+  TCanvas *cHcal_ET = new TCanvas;
+  histHcal_ET_a->GetXaxis()->SetTitle("Hcal Eta - High ET Eta");
+  histHcal_ET_a->GetYaxis()->SetTitle("Hcal Phi - High ET Phi");
+  histHcal_ET_a->Draw("colz");
+
+  TImage *imgHcal_ET = TImage::Create();
+  imgHcal_ET->FromPad(cHcal_ET);
+  imgHcal_ET->WriteImage("Hcal_ET.png");
+
+  std::cout << "Done" << std::endl;
 }
