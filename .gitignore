@@ -9,3 +9,5 @@ tags
 train/result
 .ipynb_checkpoints/
 *_exp.*
+*.png
+*.h5
