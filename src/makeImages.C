@@ -241,7 +241,7 @@ void makeImages(const char *inputFile)
       if((nx < (8+1)) || (nx > nBins_EcalEta - (8 + 1))) 
       {
         // std::cout<<"Eta too close to edge, cannot search for highest ET cell."<<std::endl;
-        hECal_d->Reset(“ICESM”);
+        hECal_d->Reset("ICESM");
         continue; 
       }
 
@@ -321,7 +321,7 @@ void makeImages(const char *inputFile)
       if((newnx < (15+1)) || (newnx > nBins_EcalEta - (15 + 1)))
       {
         // std::cout<<"Eta too close to edge, cannot create image."<<std::endl;
-        hECal_d->Reset(“ICESM”);
+        hECal_d->Reset("ICESM");
         continue;
       }
 
