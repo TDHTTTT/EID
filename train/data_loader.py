@@ -6,7 +6,7 @@ def load_data(feature, dset, only_x=False, unscaled=False):
         h5_name = 'unscaled_data.h5'
     else:
         h5_name = 'data.h5'
-    
+    assert False, 'modify the path below to the location of your data. You can download the data from http://mlphysics.ics.uci.edu'
     with h5py.File('public_data/'+h5_name, 'r') as hf:
         x = hf['%s/%s'%(feature, dset)]
         x = x[:]
