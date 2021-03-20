@@ -8,6 +8,7 @@ Julian Collado, Jessica N. Howard, Taylor Faucett, Tony Tong, Pierre Baldi, Dani
 
 https://arxiv.org/abs/2011.01984
 
+### Abstract 
 We investigate whether state-of-the-art classification features commonly used to distinguish electrons from jet backgrounds in collider experiments are overlooking valuable information. A deep convolutional neural network analysis of electromagnetic and hadronic calorimeter deposits is compared to the performance of typical features, revealing a ≈5% gap which indicates that these lower-level data do contain untapped classification power. To reveal the nature of this unused information, we use a recently developed technique to map the deep network into a space of physically interpretable observables. We identify two simple calorimeter observables which are not typically used for electron identification, but which mimic the decisions of the convolutional network and nearly close the performance gap. 
 
 ### Training
