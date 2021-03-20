@@ -24,3 +24,13 @@ output
 
 [root-url]: https://root.cern.ch/
 [delphes-url]: https://cp3.irmp.ucl.ac.be/projects/delphes
+
+
+### Training
+Make sure to update the path to the data location in line https://github.com/TDHTTTT/eID/blob/b2356c0e1f9bd6a9d0949dae3cae87e557802bab/train/data_loader.py#L10 and remove the assert statement in the previous line.
+
+To train the models simply execute the python script training.py
+
+```bash
+python training.py 
+```
