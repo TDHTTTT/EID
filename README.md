@@ -27,10 +27,12 @@ output
 
 
 ### Training
-Make sure to update the path to the data location in line https://github.com/TDHTTTT/eID/blob/b2356c0e1f9bd6a9d0949dae3cae87e557802bab/train/data_loader.py#L10 and remove the assert statement in the previous line.
+Make sure to update the path to the data location in [line 10][line10] and remove the assert statement in the previous line.
 
 To train the models simply execute the python script training.py
 
 ```bash
 python training.py 
 ```
+
+[line10]: https://github.com/TDHTTTT/eID/blob/b2356c0e1f9bd6a9d0949dae3cae87e557802bab/train/data_loader.py#L10
