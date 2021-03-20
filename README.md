@@ -1,30 +1,14 @@
-# EID
+# Learning to Identify Electrons
 
-Some macro analysis scripts on the [ROOT][root-url] file generated from [Delphes][delphes-url], looking for interesting information about electrons from a certain event and generating jet images which can be used train Neural Networks. Essentially, we want to identify the electrons from background or some interesting physics phenomenon. The two processes of interest:
+This is the code used in
 
-Background | Signal
---- | --- 
-p p > j j | p p > Z' > e+ e-
+Learning to Identify Electrons
 
-### Usage
-To use the script, first add your delphes directory in `init.sh`, then simply execute the shell script:
+Julian Collado, Jessica N. Howard, Taylor Faucett, Tony Tong, Pierre Baldi, Daniel Whiteson
 
-```bash
-./makeImages.sh <ROOT_FILE_DIR> 
-```
+https://arxiv.org/abs/2011.01984
 
-When the analysis finishes, you will find: 
-
-```bash
-output
-├ csv
-└ png
-```
-
-
-[root-url]: https://root.cern.ch/
-[delphes-url]: https://cp3.irmp.ucl.ac.be/projects/delphes
-
+We investigate whether state-of-the-art classification features commonly used to distinguish electrons from jet backgrounds in collider experiments are overlooking valuable information. A deep convolutional neural network analysis of electromagnetic and hadronic calorimeter deposits is compared to the performance of typical features, revealing a ≈5% gap which indicates that these lower-level data do contain untapped classification power. To reveal the nature of this unused information, we use a recently developed technique to map the deep network into a space of physically interpretable observables. We identify two simple calorimeter observables which are not typically used for electron identification, but which mimic the decisions of the convolutional network and nearly close the performance gap. 
 
 ### Training
 Make sure to update the path to the data location in [line 10][line10] and remove the assert statement in the previous line.
@@ -35,4 +19,11 @@ To train the models simply execute the python script training.py
 python training.py 
 ```
 
+### Data 
+Please go to UCI [MLPhysics Portal][MLPhysics] to download the dataset used in the paper. For the details about making images from the ROOT files generated from Delphes, please check the scripts in `src`.
+
+
+[root-url]: https://root.cern.ch/
+[delphes-url]: https://cp3.irmp.ucl.ac.be/projects/delphes
 [line10]: https://github.com/TDHTTTT/eID/blob/b2356c0e1f9bd6a9d0949dae3cae87e557802bab/train/data_loader.py#L10
+[MLPhysics]: http://mlphysics.ics.uci.edu/data/2020_electron/
